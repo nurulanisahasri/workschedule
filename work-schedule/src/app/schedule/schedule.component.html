@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="search-bar">
+    <input type="text" placeholder="Search by name..." [(ngModel)]="searchText" (keydown.enter)="filterTable()">
+    <button (click)="filterTable()">Search</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Income</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of filteredData">
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.income }}</td>
+          <td>
+            <span *ngIf="data.age >= 18 && data.income >= 3000">
+              <button (click)="applyCreditCard(data.id)">PASS</button>
+            </span>
+            <span *ngIf="data.age < 18 || data.income < 3000">
+              FAIL
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
