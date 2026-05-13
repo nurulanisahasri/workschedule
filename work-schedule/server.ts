@@ -14,11 +14,24 @@ export function app(): express.Express {
 
   const commonEngine = new CommonEngine();
 
+  server.use(express.json());
+
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
+  // API endpoint for frontend requests
+  server.post('/api/applyCard', (req, res) => {
+    const { userId } = req.body;
+
+    console.log(`Received card application request for userId=${userId}`);
+
+    return res.json({
+      success: true,
+      userId,
+      message: `Card application received for userId=${userId}`,
+    });
+  });
+
   // Serve static files from /browser
   server.get('**', express.static(browserDistFolder, {
     maxAge: '1y',
