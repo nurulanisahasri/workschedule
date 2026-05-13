@@ -1,0 +1,61 @@
+body {
+  font-family: Poppins;
+  background: #f5f6fa;
+  margin: 0;
+}
+
+/* Header */
+.header {
+  background: #ffcc00;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header input {
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  gap: 15px;
+  padding: 20px;
+}
+
+.card {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Table */
+table {
+  width: 90%;
+  margin: auto;
+  background: white;
+  border-collapse: collapse;
+}
+
+th {
+  background: #eee;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  background: #28a745;
+  color: white;
+  border-radius: 5px;
+}

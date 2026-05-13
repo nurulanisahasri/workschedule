@@ -1,34 +1,74 @@
-<div class="container">
-  <div class="search-bar">
-    <input type="text" placeholder="Search by name..." [(ngModel)]="searchText" (keydown.enter)="filterTable()">
-    <button (click)="filterTable()">Search</button>
-  </div>
+<div class="page-shell">
+  <nav class="navbar" aria-label="Primary navigation">
+    <div class="nav-brand">
+      <div class="brand-text">
+        <h1>Workspace Booking</h1>
+        <p>Easy seat booking and schedule management</p>
+      </div>
+      <button class="nav-toggle" type="button" [attr.aria-expanded]="navOpen" aria-controls="mainNav" (click)="toggleNav()">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
 
-  <div class="table-container">
+    <div class="nav-links" [class.open]="navOpen" id="mainNav">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#bookings">Bookings</a>
+      <a href="#reports">Reports</a>
+      <a href="#help">Help</a>
+    </div>
+
+    <div class="profile-menu">
+      <button class="profile-button" type="button" aria-haspopup="true" [attr.aria-expanded]="profileOpen" (click)="toggleProfile()">
+        <img src="https://i.pravatar.cc/40" alt="User avatar">
+        <span>Nurul</span>
+      </button>
+      <div class="dropdown" *ngIf="profileOpen" role="menu">
+        <a role="menuitem" href="#">My Profile</a>
+        <a role="menuitem" href="#">Settings</a>
+        <a role="menuitem" href="#">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="header" id="dashboard">
+    <div>
+      <h2>Workspace Booking System</h2>
+      <p>Track availability, review team bookings, and manage your workspace schedule.</p>
+    </div>
+    <input type="text" placeholder="Search workspace..." />
+  </section>
+
+  <section class="cards" id="bookings">
+    <div class="card">
+      <p>Available Seats</p>
+      <strong>24</strong>
+    </div>
+    <div class="card">
+      <p>Booked Today</p>
+      <strong>12</strong>
+    </div>
+    <div class="card">
+      <p>Utilization</p>
+      <strong>50%</strong>
+    </div>
+  </section>
+
+  <section class="table-section" id="reports">
+    <h3>Today's bookings</h3>
     <table>
       <thead>
         <tr>
           <th>Name</th>
-          <th>Age</th>
-          <th>Income</th>
+          <th>Zone</th>
+          <th>Time</th>
           <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let data of filteredData">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.income }}</td>
-          <td>
-            <span *ngIf="data.age >= 18 && data.income >= 3000">
-              <button (click)="applyCreditCard(data.id)">PASS</button>
-            </span>
-            <span *ngIf="data.age < 18 || data.income < 3000">
-              FAIL
-            </span>
-          </td>
-        </tr>
-      </tbody>
+      <tbody id="bookingTable"></tbody>
     </table>
-  </div>
+  </section>
 </div>

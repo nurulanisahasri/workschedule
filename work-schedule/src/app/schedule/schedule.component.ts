@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
   imports : [FormsModule, CommonModule]
 })
 export class ScheduleComponent {
+  navOpen = false;
+  profileOpen = false;
+
   dataList = [
     {
       id: 1,
@@ -30,6 +33,14 @@ export class ScheduleComponent {
   filteredData = this.dataList;
 
   constructor(private http: HttpClient) {}
+
+  toggleNav() {
+    this.navOpen = !this.navOpen;
+  }
+
+  toggleProfile() {
+    this.profileOpen = !this.profileOpen;
+  }
 
   applyCreditCard(id: number) {
     console.log("Applying for card for user with ID:", id);
