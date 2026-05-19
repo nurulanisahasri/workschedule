@@ -34,7 +34,7 @@ export class ScheduleComponent {
   workspaces = [
     {
       id: 1,
-      name: 'Workspace A',
+      name: 'Workspace Sky',
       zone: 'Zone 1',
       capacity: 10,
       available: 5,
@@ -42,7 +42,7 @@ export class ScheduleComponent {
     },
     {
       id: 2,
-      name: 'Workspace B',
+      name: 'Workspace Moon',
       zone: 'Zone 2',
       capacity: 8,
       available: 2,
@@ -50,7 +50,7 @@ export class ScheduleComponent {
     },
     {
       id: 3,
-      name: 'Workspace C',
+      name: 'Workspace Venus',
       zone: 'Zone 3',
       capacity: 12,
       available: 8,
