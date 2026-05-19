@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 export class ScheduleComponent {
   navOpen = false;
   profileOpen = false;
+  bookingModalOpen = false;
+  selectedWorkspace: any = null;
 
   dataList = [
     {
@@ -29,6 +31,40 @@ export class ScheduleComponent {
     }
   ];
 
+  workspaces = [
+    {
+      id: 1,
+      name: 'Workspace A',
+      zone: 'Zone 1',
+      capacity: 10,
+      available: 5,
+      price: 50
+    },
+    {
+      id: 2,
+      name: 'Workspace B',
+      zone: 'Zone 2',
+      capacity: 8,
+      available: 2,
+      price: 60
+    },
+    {
+      id: 3,
+      name: 'Workspace C',
+      zone: 'Zone 3',
+      capacity: 12,
+      available: 8,
+      price: 45
+    }
+  ];
+
+  bookingForm = {
+    date: '',
+    time: '',
+    duration: 1,
+    notes: ''
+  };
+
   searchText: string = '';
   filteredData = this.dataList;
 
@@ -40,6 +76,57 @@ export class ScheduleComponent {
 
   toggleProfile() {
     this.profileOpen = !this.profileOpen;
+  }
+
+  openBookingModal(workspace: any) {
+    this.selectedWorkspace = workspace;
+    this.bookingModalOpen = true;
+    this.resetBookingForm();
+  }
+
+  closeBookingModal() {
+    this.bookingModalOpen = false;
+    this.selectedWorkspace = null;
+  }
+
+  resetBookingForm() {
+    this.bookingForm = {
+      date: '',
+      time: '',
+      duration: 1,
+      notes: ''
+    };
+  }
+
+  bookNow() {
+    if (!this.bookingForm.date || !this.bookingForm.time) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const bookingData = {
+      workspaceId: this.selectedWorkspace.id,
+      workspaceName: this.selectedWorkspace.name,
+      date: this.bookingForm.date,
+      time: this.bookingForm.time,
+      duration: this.bookingForm.duration,
+      notes: this.bookingForm.notes,
+      status: 'Confirmed'
+    };
+
+    const apiUrl = '/api/bookWorkspace';
+
+    this.http.post(apiUrl, bookingData).subscribe(
+      response => {
+        console.log(`Workspace booking successful:`, bookingData);
+        alert(`✓ Successfully booked ${this.selectedWorkspace.name} for ${this.bookingForm.date} at ${this.bookingForm.time}`);
+        this.closeBookingModal();
+      },
+      error => {
+        console.error(`Error booking workspace:`, error);
+        alert(`Failed to book workspace. Please try again.`);
+      }
+    );
   }
 
   applyCreditCard(id: number) {
