@@ -58,8 +58,8 @@
 
 .nav-links a:hover,
 .nav-links a:focus-visible {
-  background: #eff6ff;
-  color: #4338ca;
+  background: #fdecef;
+  color: #b3376b;
   outline: none;
 }
 
@@ -101,8 +101,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background: #eef2ff;
-  border: 1px solid #dbeafe;
+  background: #fde3eb;
+  border: 1px solid #f4c4d0;
   border-radius: 9999px;
   padding: 0.65rem 0.9rem;
   cursor: pointer;
@@ -144,7 +144,7 @@
 }
 
 .header {
-  background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #f7c6d3 0%, #f2a9bf 100%);
   color: #ffffff;
   padding: 2rem 1.5rem;
   border-radius: 24px;
@@ -332,8 +332,8 @@ tbody tr:hover {
 }
 
 .workspace-card:hover {
-  border-color: #4338ca;
-  box-shadow: 0 20px 40px rgba(67, 56, 202, 0.12);
+  border-color: #f7c6d3;
+  box-shadow: 0 20px 40px rgba(247, 166, 191, 0.12);
   transform: translateY(-2px);
 }
 
@@ -352,8 +352,8 @@ tbody tr:hover {
 }
 
 .zone-badge {
-  background: #eef2ff;
-  color: #4338ca;
+  background: #fce7f3;
+  color: #b3376b;
   padding: 0.35rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.8rem;
@@ -393,7 +393,7 @@ tbody tr:hover {
 
 .book-now-btn {
   width: 100%;
-  background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #f7c6d3 0%, #f2a9bf 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -406,7 +406,7 @@ tbody tr:hover {
 
 .book-now-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(67, 56, 202, 0.3);
+  box-shadow: 0 12px 24px rgba(247, 158, 190, 0.3);
 }
 
 .book-now-btn:active:not(:disabled) {
@@ -503,6 +503,54 @@ tbody tr:hover {
   padding: 1.5rem;
 }
 
+.profile-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 2px solid #f7c6d3;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.profile-info p {
+  margin: 0.25rem 0;
+  color: #6b7280;
+}
+
+.profile-bio {
+  margin-bottom: 1.5rem;
+}
+
+.profile-bio h4 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.profile-bio p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -531,8 +579,8 @@ tbody tr:hover {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4338ca;
-  box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
+  border-color: #f7c6d3;
+  box-shadow: 0 0 0 3px rgba(247, 176, 188, 0.25);
 }
 
 .form-group textarea {
@@ -586,13 +634,13 @@ tbody tr:hover {
 }
 
 .btn-confirm {
-  background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #f7c6d3 0%, #f2a9bf 100%);
   color: #ffffff;
 }
 
 .btn-confirm:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(67, 56, 202, 0.3);
+  box-shadow: 0 12px 24px rgba(247, 158, 190, 0.3);
 }
 
 @media (max-width: 768px) {

@@ -26,7 +26,7 @@
         <span>Nurul</span>
       </button>
       <div class="dropdown" *ngIf="profileOpen" role="menu">
-        <a role="menuitem" href="#">My Profile</a>
+        <a role="menuitem" href="#" (click)="openProfileModal(); $event.preventDefault()">My Profile</a>
         <a role="menuitem" href="#">Settings</a>
         <a role="menuitem" href="#">Logout</a>
       </div>
@@ -156,6 +156,37 @@
             <button type="submit" class="btn-confirm">Confirm Booking</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" *ngIf="profileModalOpen" (click)="closeProfileModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>My Profile</h3>
+        <button class="close-btn" (click)="closeProfileModal()" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-details">
+          <div class="profile-avatar">
+            <img src="https://i.pravatar.cc/100" alt="User avatar">
+          </div>
+          <div class="profile-info">
+            <h4>{{ currentUser.name }}</h4>
+            <p>{{ currentUser.role }}</p>
+            <p>{{ currentUser.location }}</p>
+            <p>{{ currentUser.email }}</p>
+            <p>{{ currentUser.phone }}</p>
+          </div>
+        </div>
+        <div class="profile-bio">
+          <h4>About</h4>
+          <p>{{ currentUser.bio }}</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closeProfileModal()">Close</button>
+        </div>
       </div>
     </div>
   </div>

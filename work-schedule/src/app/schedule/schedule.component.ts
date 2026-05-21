@@ -13,8 +13,18 @@ import { CommonModule } from '@angular/common';
 export class ScheduleComponent {
   navOpen = false;
   profileOpen = false;
+  profileModalOpen = false;
   bookingModalOpen = false;
   selectedWorkspace: any = null;
+
+  currentUser = {
+    name: 'Nurul',
+    email: 'nurul@example.com',
+    role: 'Team Member',
+    location: 'Jakarta, Indonesia',
+    bio: 'Designs smooth workspace experiences with attention to detail.',
+    phone: '+62 812 3456 7890'
+  };
 
   dataList = [
     {
@@ -76,6 +86,15 @@ export class ScheduleComponent {
 
   toggleProfile() {
     this.profileOpen = !this.profileOpen;
+  }
+
+  openProfileModal() {
+    this.profileModalOpen = true;
+    this.profileOpen = false;
+  }
+
+  closeProfileModal() {
+    this.profileModalOpen = false;
   }
 
   openBookingModal(workspace: any) {
