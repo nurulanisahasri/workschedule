@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ProfilePopupComponent } from './profile-popup.component';
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css'],
-  standalone : true,
-  imports : [FormsModule, CommonModule]
+  standalone: true,
+  imports: [FormsModule, CommonModule, ProfilePopupComponent]
 })
 export class ScheduleComponent {
   navOpen = false;
@@ -95,6 +96,10 @@ export class ScheduleComponent {
 
   closeProfileModal() {
     this.profileModalOpen = false;
+  }
+
+  updateCurrentUser(profile: any) {
+    this.currentUser = { ...this.currentUser, ...profile };
   }
 
   openBookingModal(workspace: any) {

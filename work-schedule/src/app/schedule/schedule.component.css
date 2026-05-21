@@ -479,6 +479,42 @@ tbody tr:hover {
   color: #111827;
 }
 
+.profile-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-modal-header h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.profile-modal-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.btn-edit-profile {
+  align-self: center;
+  background: #f7c6d3;
+  color: #111827;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-edit-profile:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(247, 158, 190, 0.25);
+}
+
 .close-btn {
   background: none;
   border: none;
