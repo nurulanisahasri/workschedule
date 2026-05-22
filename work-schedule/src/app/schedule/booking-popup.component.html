@@ -1,0 +1,54 @@
+<div class="modal-overlay" (click)="closePopup()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Book {{ workspace?.name }}</h3>
+      <button class="close-btn" (click)="closePopup()" aria-label="Close modal">×</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="bookNow()">
+        <div class="form-group">
+          <label for="date">Date *</label>
+          <input
+            type="date"
+            id="date"
+            [(ngModel)]="bookingForm.date"
+            name="date"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="time">Time *</label>
+          <input
+            type="time"
+            id="time"
+            [(ngModel)]="bookingForm.time"
+            name="time"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration (hours)</label>
+          <select id="duration" [(ngModel)]="bookingForm.duration" name="duration">
+            <option [value]="1">1 hour</option>
+            <option [value]="2">2 hours</option>
+            <option [value]="4">4 hours</option>
+            <option [value]="8">Full day (8 hours)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea
+            id="notes"
+            [(ngModel)]="bookingForm.notes"
+            name="notes"
+            placeholder="Add any additional notes..."></textarea>
+        </div>
+        <div class="form-group price-info">
+          <p>Total: <strong>\${{ workspace?.price }}</strong></p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closePopup()">Cancel</button>
+          <button type="submit" class="btn-confirm">Confirm Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

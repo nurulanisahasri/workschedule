@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProfilePopupComponent } from './profile-popup.component';
+import { BookingPopupComponent } from './booking-popup.component';
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule, ProfilePopupComponent]
+  imports: [CommonModule, ProfilePopupComponent, BookingPopupComponent]
 })
 export class ScheduleComponent {
   navOpen = false;
@@ -69,13 +69,6 @@ export class ScheduleComponent {
     }
   ];
 
-  bookingForm = {
-    date: '',
-    time: '',
-    duration: 1,
-    notes: ''
-  };
-
   searchText: string = '';
   filteredData = this.dataList;
 
@@ -105,52 +98,11 @@ export class ScheduleComponent {
   openBookingModal(workspace: any) {
     this.selectedWorkspace = workspace;
     this.bookingModalOpen = true;
-    this.resetBookingForm();
   }
 
   closeBookingModal() {
     this.bookingModalOpen = false;
     this.selectedWorkspace = null;
-  }
-
-  resetBookingForm() {
-    this.bookingForm = {
-      date: '',
-      time: '',
-      duration: 1,
-      notes: ''
-    };
-  }
-
-  bookNow() {
-    if (!this.bookingForm.date || !this.bookingForm.time) {
-      alert('Please fill in all required fields');
-      return;
-    }
-
-    const bookingData = {
-      workspaceId: this.selectedWorkspace.id,
-      workspaceName: this.selectedWorkspace.name,
-      date: this.bookingForm.date,
-      time: this.bookingForm.time,
-      duration: this.bookingForm.duration,
-      notes: this.bookingForm.notes,
-      status: 'Confirmed'
-    };
-
-    const apiUrl = '/api/bookWorkspace';
-
-    this.http.post(apiUrl, bookingData).subscribe(
-      response => {
-        console.log(`Workspace booking successful:`, bookingData);
-        alert(`✓ Successfully booked ${this.selectedWorkspace.name} for ${this.bookingForm.date} at ${this.bookingForm.time}`);
-        this.closeBookingModal();
-      },
-      error => {
-        console.error(`Error booking workspace:`, error);
-        alert(`Failed to book workspace. Please try again.`);
-      }
-    );
   }
 
   applyCreditCard(id: number) {

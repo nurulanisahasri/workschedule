@@ -1,0 +1,87 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>My Profile</h3>
+      <button class="close-btn" (click)="onClose()" aria-label="Close modal">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="profile-modal-header">
+        <div>
+          <h4>Profile Summary</h4>
+          <p>View your profile details and edit them when needed.</p>
+        </div>
+        <button type="button" class="btn-edit-profile" *ngIf="!editingProfile" (click)="enterProfileEditMode()">
+          ✎ Edit
+        </button>
+      </div>
+
+      <div *ngIf="!editingProfile">
+        <div class="profile-details">
+          <div class="profile-avatar">
+            <img src="https://i.pravatar.cc/100" alt="User avatar">
+          </div>
+          <div class="profile-info">
+            <h4>{{ currentUser.name }}</h4>
+            <p>{{ currentUser.role }}</p>
+            <p>{{ currentUser.location }}</p>
+            <p>{{ currentUser.email }}</p>
+            <p>{{ currentUser.phone }}</p>
+          </div>
+        </div>
+        <div class="profile-bio">
+          <h4>About</h4>
+          <p>{{ currentUser.bio }}</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="onClose()">Close</button>
+        </div>
+      </div>
+
+      <form *ngIf="editingProfile" (ngSubmit)="saveProfile()">
+        <div class="profile-details edit-view">
+          <div class="profile-avatar">
+            <img src="https://i.pravatar.cc/100" alt="User avatar">
+          </div>
+          <div class="profile-info">
+            <h4>Edit profile</h4>
+            <p>Update the fields below and save your changes.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" [(ngModel)]="currentUser.name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" [(ngModel)]="currentUser.email" required>
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <input id="role" name="role" type="text" [(ngModel)]="currentUser.role">
+        </div>
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input id="location" name="location" type="text" [(ngModel)]="currentUser.location">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" [(ngModel)]="currentUser.phone">
+        </div>
+        <div class="form-group">
+          <label for="bio">About</label>
+          <textarea id="bio" name="bio" [(ngModel)]="currentUser.bio"></textarea>
+        </div>
+        <div class="profile-bio" *ngIf="profileMessage">
+          <p>{{ profileMessage }}</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="cancelProfileEdit()">Cancel</button>
+          <button type="submit" class="btn-confirm" [disabled]="isSavingProfile">
+            {{ isSavingProfile ? 'Saving...' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
