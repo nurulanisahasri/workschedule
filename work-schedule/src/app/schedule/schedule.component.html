@@ -114,6 +114,7 @@
   <!-- Profile Modal -->
   <app-profile-popup
     *ngIf="profileModalOpen"
+    [profile]="currentUser"
     (close)="closeProfileModal()"
     (saved)="updateCurrentUser($event)">
   </app-profile-popup>

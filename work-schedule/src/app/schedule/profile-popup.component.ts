@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 interface Profile {
   userId?: string;
@@ -26,11 +26,12 @@ const DEFAULT_PROFILE: Profile = {
 @Component({
   selector: 'app-profile-popup',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './profile-popup.component.html',
   styleUrls: ['./profile-popup.component.css'],
 })
-export class ProfilePopupComponent implements OnInit {
+export class ProfilePopupComponent implements OnInit, OnChanges {
+  @Input() profile: Profile | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() saved = new EventEmitter<Profile>();
 
@@ -43,7 +44,17 @@ export class ProfilePopupComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadUserProfile();
+    if (this.profile) {
+      this.currentUser = { ...this.profile };
+    } else {
+      this.loadUserProfile();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['profile'] && changes['profile'].currentValue) {
+      this.currentUser = { ...changes['profile'].currentValue };
+    }
   }
 
   onClose() {

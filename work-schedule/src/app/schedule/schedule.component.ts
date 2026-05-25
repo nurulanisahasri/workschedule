@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ProfilePopupComponent } from './profile-popup.component';
 import { BookingPopupComponent } from './booking-popup.component';
@@ -9,7 +10,7 @@ import { BookingPopupComponent } from './booking-popup.component';
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css'],
   standalone: true,
-  imports: [CommonModule, ProfilePopupComponent, BookingPopupComponent]
+  imports: [CommonModule, HttpClientModule, ProfilePopupComponent, BookingPopupComponent]
 })
 export class ScheduleComponent {
   navOpen = false;
