@@ -1,16 +1,41 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 datasource db {
   provider = "mongodb"
+  url      = env("MONGODB_URI")
 }
+
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
 
-// datasource db {
-//   provider = "postgresql"
-// }
+model Booking {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  workspaceId      String
+  workspaceName    String
+  date             String
+  time             String
+  endTime          String
+  duration         Float
+  notes            String?
+  price            Float
+  status           String   @default("Confirmed")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Profile {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique
+  name      String
+  email     String
+  role      String?
+  location  String?
+  bio       String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

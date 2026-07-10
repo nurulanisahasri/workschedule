@@ -17,21 +17,51 @@
         </div>
         <div class="form-group">
           <label for="time">Time *</label>
-          <input
-            type="time"
-            id="time"
-            [(ngModel)]="bookingForm.time"
-            name="time"
-            required>
+          <div class="time-picker-row">
+            <select
+              id="time-hour"
+              [(ngModel)]="timeHour"
+              name="timeHour"
+              (change)="updateTimeFromSelects('time')"
+              required>
+              <option value="">Hour</option>
+              <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
+            </select>
+            <select
+              id="time-minute"
+              [(ngModel)]="timeMinute"
+              name="timeMinute"
+              (change)="updateTimeFromSelects('time')"
+              required>
+              <option value="">Minutes</option>
+              <option value="00">00</option>
+              <option value="30">30</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
-          <label for="duration">Duration (hours)</label>
-          <select id="duration" [(ngModel)]="bookingForm.duration" name="duration">
-            <option [value]="1">1 hour</option>
-            <option [value]="2">2 hours</option>
-            <option [value]="4">4 hours</option>
-            <option [value]="8">Full day (8 hours)</option>
-          </select>
+          <label for="endTime">End Time *</label>
+          <div class="time-picker-row">
+            <select
+              id="endTime-hour"
+              [(ngModel)]="endTimeHour"
+              name="endTimeHour"
+              (change)="updateTimeFromSelects('endTime')"
+              required>
+              <option value="">Hour</option>
+              <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
+            </select>
+            <select
+              id="endTime-minute"
+              [(ngModel)]="endTimeMinute"
+              name="endTimeMinute"
+              (change)="updateTimeFromSelects('endTime')"
+              required>
+              <option value="">Minutes</option>
+              <option value="00">00</option>
+              <option value="30">30</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
           <label for="notes">Notes</label>
@@ -41,8 +71,10 @@
             name="notes"
             placeholder="Add any additional notes..."></textarea>
         </div>
+        
         <div class="form-group price-info">
-          <p>Total: <strong>\${{ workspace?.price }}</strong></p>
+          <p>Duration: <strong>{{ durationInHours }} hour(s)</strong></p>
+          <p>Total Price: <strong>${{ totalPrice | number:'1.2-2' }}</strong></p>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn-cancel" (click)="closePopup()">Cancel</button>

@@ -1,0 +1,18 @@
+nohup: ignoring input
+file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/server.mjs:52628
+    var AsyncIteratorPrototype = Object.getPrototypeOf(Object.getPrototypeOf(function() {
+                                        ^
+
+TypeError: Cannot convert undefined or null to object
+    at Object.getPrototypeOf (<anonymous>)
+    at node_modules/whatwg-url/lib/utils.js (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/server.mjs:52628:41)
+    at __require2 (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/chunk-KEEN3TFB.mjs:52:50)
+    at node_modules/whatwg-url/lib/URL.js (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/server.mjs:55500:17)
+    at __require2 (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/chunk-KEEN3TFB.mjs:52:50)
+    at node_modules/whatwg-url/webidl2js-wrapper.js (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/server.mjs:55935:16)
+    at __require2 (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/chunk-KEEN3TFB.mjs:52:50)
+    at node_modules/whatwg-url/index.js (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/server.mjs:55949:9)
+    at __require2 (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/chunk-KEEN3TFB.mjs:52:50)
+    at node_modules/mongodb-connection-string-url/lib/index.js (file:///workspaces/workschedule/work-schedule/dist/work-schedule/server/server.mjs:56092:24)
+
+Node.js v24.14.0

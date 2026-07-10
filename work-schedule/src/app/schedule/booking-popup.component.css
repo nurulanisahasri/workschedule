@@ -161,6 +161,28 @@
   box-shadow: 0 12px 24px rgba(247, 158, 190, 0.3);
 }
 
+.time-picker-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.time-picker-row select {
+  flex: 1;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.time-picker-row select:focus {
+  outline: none;
+  border-color: #f7c6d3;
+  box-shadow: 0 0 0 3px rgba(247, 176, 188, 0.25);
+}
+
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;

@@ -1,10 +1,20 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine } from '@angular/ssr';
 import express from 'express';
-import { MongoClient } from 'mongodb';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
+import { MongoClient, ObjectId } from 'mongodb';
+import { join } from 'node:path';
+
+const DEFAULT_PROFILE = {
+  userId: 'default-user',
+  name: 'Nurul',
+  email: 'nurul@example.com',
+  role: 'Team Member',
+  location: 'Jakarta, Indonesia',
+  bio: 'Designs smooth workspace experiences with attention to detail.',
+  phone: '+62 812 3456 7890',
+};
+
+let currentProfile = { ...DEFAULT_PROFILE };
+const inMemoryBookings: any[] = [];
+const inMemoryProfiles: any[] = [{ ...DEFAULT_PROFILE }];
 
 const mongoUri = process.env['MONGODB_URI'] || 'mongodb://127.0.0.1:27017/workschedule';
 const mongoClient = new MongoClient(mongoUri, {
@@ -22,35 +32,18 @@ async function getDb() {
     dbConnected = true;
     console.log('Connected to MongoDB:', mongoUri);
     return mongoClient.db();
-  } catch (error) {
-    console.error('MongoDB connection failed:', error);
+  } catch (error: any) {
+    console.warn('MongoDB connection failed:', error.message);
+    console.warn('Using in-memory storage for bookings and profiles');
     return null;
   }
 }
 
-const DEFAULT_PROFILE = {
-  userId: 'default-user',
-  name: 'Nurul',
-  email: 'nurul@example.com',
-  role: 'Team Member',
-  location: 'Jakarta, Indonesia',
-  bio: 'Designs smooth workspace experiences with attention to detail.',
-  phone: '+62 812 3456 7890',
-};
-
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-  const browserDistFolder = resolve(serverDistFolder, '../browser');
-  const indexHtml = join(serverDistFolder, 'index.server.html');
-
-  const commonEngine = new CommonEngine();
 
   server.use(express.json());
-
-  server.set('view engine', 'html');
-  server.set('views', browserDistFolder);
 
   // API endpoint for frontend requests
   server.post('/api/applyCard', (req, res) => {
@@ -65,25 +58,71 @@ export function app(): express.Express {
     });
   });
 
+  server.post('/api/bookWorkspace', async (req, res) => {
+    const bookingData = req.body;
+
+    console.log('Received booking request:', bookingData);
+
+    if (!bookingData || !bookingData.workspaceId || !bookingData.date || !bookingData.time || !bookingData.endTime) {
+      console.error('Missing required fields:', { workspaceId: bookingData?.workspaceId, date: bookingData?.date, time: bookingData?.time, endTime: bookingData?.endTime });
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required booking fields. Please provide workspaceId, date, time, and endTime.',
+      });
+    }
+
+    try {
+      const db = await getDb();
+      if (db) {
+        const collection = db.collection<any>('bookings');
+        const bookingWithTimestamp = {
+          ...bookingData,
+          _id: new ObjectId(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        const result = await collection.insertOne(bookingWithTimestamp);
+        console.log('Booking saved to MongoDB:', result.insertedId);
+        return res.json({ success: true, booking: bookingWithTimestamp, bookingId: result.insertedId });
+      } else {
+        console.warn('MongoDB not connected, storing in memory');
+        const booking = {
+          ...bookingData,
+          _id: `mem-${Date.now()}`,
+          createdAt: new Date(),
+        };
+        inMemoryBookings.push(booking);
+        return res.json({ success: true, booking, bookingId: booking._id });
+      }
+    } catch (error: any) {
+      console.error('Error saving booking:', error);
+      return res.status(500).json({
+        success: false,
+        message: `Failed to book workspace: ${error.message || 'Unknown error'}`,
+        error: error.message,
+      });
+    }
+  });
+
   server.get('/api/profile', async (req, res) => {
     try {
       const db = await getDb();
       if (!db) {
-        return res.json({ success: true, profile: DEFAULT_PROFILE });
+        // Return current profile from in-memory storage
+        return res.json({ success: true, profile: currentProfile });
       }
 
       const collection = db.collection<any>('profiles');
-      let profile = await collection.findOne({ userId: DEFAULT_PROFILE.userId });
+      const profile = await collection.findOne({ userId: DEFAULT_PROFILE.userId });
 
-      if (!profile) {
-        await collection.insertOne(DEFAULT_PROFILE);
-        profile = DEFAULT_PROFILE;
+      if (profile) {
+        currentProfile = profile;
       }
 
-      return res.json({ success: true, profile });
-    } catch (error) {
+      return res.json({ success: true, profile: currentProfile });
+    } catch (error: any) {
       console.error('Error fetching profile:', error);
-      return res.json({ success: true, profile: DEFAULT_PROFILE });
+      return res.status(500).json({ success: false, message: `Failed to load profile: ${error.message}` });
     }
   });
 
@@ -96,44 +135,39 @@ export function app(): express.Express {
     try {
       const db = await getDb();
       if (!db) {
-        console.warn('MongoDB unavailable; returning profile without saving.');
-        return res.json({ success: true, profile: profileData });
+        currentProfile = profileData;
+        return res.json({ success: true, profile: currentProfile });
       }
 
       const collection = db.collection<any>('profiles');
-      const result = (await collection.findOneAndUpdate(
+      const result = await collection.findOneAndUpdate(
         { userId: DEFAULT_PROFILE.userId },
         { $set: profileData },
         { upsert: true, returnDocument: 'after' }
-      )) as { value: any } | null;
+      );
 
-      return res.json({ success: true, profile: result?.value ?? profileData });
-    } catch (error) {
+      currentProfile = result.value ?? profileData;
+      return res.json({ success: true, profile: currentProfile });
+    } catch (error: any) {
       console.error('Error saving profile:', error);
-      return res.json({ success: true, profile: profileData });
+      return res.status(500).json({ success: false, message: `Failed to save profile: ${error.message}` });
     }
   });
 
-  // Serve static files from /browser
-  server.get('**', express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
-  }));
+  server.get('/api/bookings', async (req, res) => {
+    try {
+      const db = await getDb();
+      if (db) {
+        const collection = db.collection<any>('bookings');
+        const bookings = await collection.find().toArray();
+        return res.json({ success: true, bookings });
+      }
 
-  // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
-
-    commonEngine
-      .render({
-        bootstrap,
-        documentFilePath: indexHtml,
-        url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: browserDistFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
-      })
-      .then((html) => res.send(html))
-      .catch((err) => next(err));
+      return res.json({ success: true, bookings: inMemoryBookings });
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      return res.status(500).json({ success: false, message: 'Failed to load bookings.' });
+    }
   });
 
   return server;
